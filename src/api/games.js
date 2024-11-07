@@ -1,8 +1,7 @@
 import {useGosRouter} from 'hooks';
 import {deserialise} from 'kitsu-core';
 import queryString from 'query-string';
-import {QueryClient, useInfiniteQuery} from 'react-query';
-import {dehydrate} from 'react-query/hydration';
+import {QueryClient, useInfiniteQuery, dehydrate} from '@tanstack/react-query';
 import {fetchApi} from './api';
 
 const options = {
@@ -24,18 +23,19 @@ export const fetchGames = async ({queryKey: [, value], pageParam}) => {
     },
     {
       arrayFormat: 'bracket',
-    },
+    }
   );
 
   // Get games from server
   const data = await fetchApi(queryUrl);
 
-  if (typeof data.errors != "undefined") {
+  if (typeof data.errors != 'undefined') {
     return data;
   }
 
   // Set next page index for next call
-  const hasNextPage = data.hits.total.value > (data.hits.hits.length * ((pageParam || 0) + 1));
+  const hasNextPage =
+    data.hits.total.value > data.hits.hits.length * ((pageParam || 0) + 1);
 
   data.page = pageParam;
   data.nextPage = hasNextPage ? (pageParam || 0) + 1 : false;
