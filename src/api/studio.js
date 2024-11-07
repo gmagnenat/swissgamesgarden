@@ -1,7 +1,6 @@
 import {getJsonApi} from 'config';
 import {deserialise, query} from 'kitsu-core';
-import {QueryClient, useQuery} from 'react-query';
-import {dehydrate} from 'react-query/hydration';
+import {QueryClient, useQuery, dehydrate} from '@tanstack/react-query';
 
 export const getStudio = async ({queryKey}) => {
   // Get studio
@@ -17,12 +16,12 @@ export const getStudio = async ({queryKey}) => {
   });
 
   const studioRes = await fetch(
-    `${getJsonApi()}/node/studio?${studioQueryUrl}`,
+    `${getJsonApi()}/node/studio?${studioQueryUrl}`
   ).catch(err => {
     console.log(err);
   });
   const dataStudio = await studioRes.json();
-  const studio = await deserialise(dataStudio).data[0] || null;
+  const studio = (await deserialise(dataStudio).data[0]) || null;
 
   ////////////////////////
   // Get games from studio
@@ -35,11 +34,11 @@ export const getStudio = async ({queryKey}) => {
     },
   });
 
-  const res = await fetch(
-    `${getJsonApi()}/node/game?${gamesQueryUrl}`,
-  ).catch(err => {
-    console.log(err);
-  });
+  const res = await fetch(`${getJsonApi()}/node/game?${gamesQueryUrl}`).catch(
+    err => {
+      console.log(err);
+    }
+  );
   const dataGames = await res.json();
   const games = await deserialise(dataGames).data;
 

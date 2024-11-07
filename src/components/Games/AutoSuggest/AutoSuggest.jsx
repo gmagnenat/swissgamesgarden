@@ -4,7 +4,7 @@ import {useCombobox} from 'downshift';
 import {getAutocomplete} from 'api/autocomplete';
 import classNames from 'classnames';
 import {useTranslation} from 'react-i18next';
-import {useQuery} from 'react-query';
+import {useQuery} from '@tanstack/react-query';
 
 const AutoSuggest = props => {
   const {t} = useTranslation();

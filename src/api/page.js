@@ -1,7 +1,6 @@
 import {getJsonApi} from 'config';
 import {deserialise, query} from 'kitsu-core';
-import {QueryClient, useQuery} from 'react-query';
-import {dehydrate} from 'react-query/hydration';
+import {QueryClient, useQuery, dehydrate} from '@tanstack/react-query';
 
 export const getPage = async ({queryKey}) => {
   const queryUrl = query({
@@ -13,11 +12,11 @@ export const getPage = async ({queryKey}) => {
     },
   });
 
-  const res = await fetch(
-    `${getJsonApi()}/node/page?${queryUrl}`
-  ).catch(err => {
-    console.log(err);
-  });
+  const res = await fetch(`${getJsonApi()}/node/page?${queryUrl}`).catch(
+    err => {
+      console.log(err);
+    }
+  );
   const data = await res.json();
 
   return (await deserialise(data).data[0]) || null;
