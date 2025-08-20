@@ -37,3 +37,35 @@ jobs:
        with:
          stage: staging
          ssh_private_key: ${{ secrets.PRIVATE_SSH_KEY }}
+
+  deploy_prod_unil:
+   name: Deploy to Production (UNIL)
+   environment:
+     name: Production
+     url: https://swissgames.garden
+   if: github.ref == 'refs/heads/feature/deploy-to-unil'
+   runs-on: ubuntu-latest
+   env:
+     PRIVATE_SSH_KEY: ${{ secrets.PRIVATE_SSH_KEY }}
+   steps:
+     - uses: actions/checkout@v3
+     - uses: ./.github/actions/deploy
+       with:
+         stage: production
+         ssh_private_key: ${{ secrets.PRIVATE_SSH_KEY }}
+
+  deploy_staging_unil:
+   name: Deploy to Staging (UNIL)
+   environment:
+     name: Staging
+     url: https://staging.swissgames.garden
+   if: github.ref == 'refs/heads/feature/deploy-to-unil'
+   runs-on: ubuntu-latest
+   env:
+     PRIVATE_SSH_KEY: ${{ secrets.PRIVATE_SSH_KEY }}
+   steps:
+     - uses: actions/checkout@v3
+     - uses: ./.github/actions/deploy
+       with:
+         stage: staging
+         ssh_private_key: ${{ secrets.PRIVATE_SSH_KEY }}

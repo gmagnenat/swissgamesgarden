@@ -10,8 +10,6 @@ set :docker_app_name, -> {
 set :docker_app_service, 'next_app'
 set :docker_containers, 'next_app'
 
-server 'gos.museebolo.ch', port: '44144', user: 'deploy', roles: %w{app db web}
-
 # Link environments files
 set :linked_files, fetch(:linked_files, []).push("docker-compose.override.yml")
 
@@ -116,10 +114,9 @@ namespace :deploy do
     end
   end
 
-  before 'deploy:symlink:shared', 'deploy:copy_files'
-
+  after :publishing, 'deploy:copy_files'
   after :publishing, 'deploy:restart'
-  after 'deploy:restart', 'deploy:hosts'
+  # after 'deploy:restart', 'deploy:hosts'
 
   # Cleanup old release.
   before :cleanup, "deploy:permissions:cleanup"
